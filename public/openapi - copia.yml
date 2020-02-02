@@ -1,0 +1,2162 @@
+openapi: 3.0.2
+
+info:
+  title: Bloomstore SAP API
+  description: API utilizada por la aplicación SAP.
+  version: "1.0"
+  contact:
+    name: Bloomstore SAP API
+    email: frueda@dinacom.es
+
+servers:
+  - url: http://apibloomstore.clientesbiz.com/v1
+    description: Servidor de pre producción D458
+  - url: http://test.bloomstore.net/v1
+    description: Servidor de test Bloomsuit    
+  - url: http://bloomstoreapi.vega.dinacom.local:8080/v1
+    description: Servidor de desarrollo Vega
+  - url: http://api.bloomstore.net/v1_prod
+    description: Servidor de producción Bloomsuit    
+
+tags:
+  - name: Autenticación
+  - name: Clientes
+  - name: Subclientes
+  - name: Direcciones
+  - name: Envases
+  - name: Exclusiones
+  - name: Saldo-envases
+  - name: Productos
+  - name: Variables
+  - name: Variables-Articulos
+  - name: Variables-Mixtas
+  - name: Tarifas
+  - name: Precios
+  - name: Pedidos
+  - name: Linea-Servida    
+  - name: Traducciones
+
+
+paths:  
+  /access-token:
+    post:
+      security:
+        - authorization-token: []
+      tags:
+        - Autenticación
+      summary: Generar token de acceso.
+      operationId: GenerarToken
+      responses:
+        200:
+          description: Token obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/token'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+
+  
+  /clientes:
+    post:
+      tags:
+        - Clientes
+      summary: Crear un cliente.
+      operationId: CrearCliente
+      requestBody:
+        description: Objeto cliente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cliente-objeto'
+      responses:
+        201:
+          description: Cliente creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Clientes
+      summary: Modificar un cliente.
+      operationId: ModificarCliente
+      requestBody:
+        description: Objeto cliente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cliente-objeto'
+      responses:
+        204:
+          description: Cliente modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'    
+  /clientes/{codigo}:
+    get:
+      tags:
+        - Clientes
+      summary: Obtener un cliente.
+      operationId: ObtenerCliente
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Cliente obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cliente-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Clientes
+      summary: Eliminar un cliente.
+      operationId: EliminarCliente
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Cliente eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /subclientes:
+    post:
+      tags:
+        - Subclientes
+      summary: Crear un subcliente.
+      operationId: CrearSubcliente
+      requestBody:
+        description: Objeto subcliente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/subcliente-objeto'
+      responses:
+        201:
+          description: Subcliente creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Subclientes
+      summary: Modificar un subcliente.
+      operationId: ModificarSubcliente
+      requestBody:
+        description: Objeto subcliente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/subcliente-objeto'
+      responses:
+        204:
+          description: Subcliente modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'    
+  /subclientes/{codigo}:
+    get:
+      tags:
+        - Subclientes
+      summary: Obtener un subcliente.
+      operationId: ObtenerSubcliente
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Subcliente obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/subcliente-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Subclientes
+      summary: Eliminar un subcliente.
+      operationId: EliminarSubcliente
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Subcliente eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /direcciones:
+    post:
+      tags:
+        - Direcciones
+      summary: Crear una dirección.
+      operationId: CrearDireccion
+      requestBody:
+        description: Objeto dirección
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/direccion-objeto'
+      responses:
+        201:
+          description: Dirección creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Direcciones
+      summary: Modificar una dirección.
+      operationId: ModificarDireccion
+      requestBody:
+        description: Objeto dirección
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/direccion-objeto'
+      responses:
+        204:
+          description: Dirección modificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'    
+  /direcciones/{codigo}:
+    get:
+      tags:
+        - Direcciones
+      summary: Obtener una dirección.
+      operationId: ObtenerDireccion
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Dirección obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/direccion-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Direcciones
+      summary: Eliminar una dirección.
+      operationId: EliminarDireccion
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Dirección eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /envases:
+    post:
+      tags:
+        - Envases
+      summary: Crear un envase.
+      operationId: CrearEnvase
+      requestBody:
+        description: Objeto envase
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/envase-objeto'
+      responses:
+        201:
+          description: Envase creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Envases
+      summary: Modificar un envase.
+      operationId: ModificarEnvase
+      requestBody:
+        description: Objeto envase
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/envase-objeto'
+      responses:
+        204:
+          description: Envase modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /envases/{codigo}:
+    get:
+      tags:
+        - Envases
+      summary: Obtener un envase.
+      operationId: ObtenerEnvase
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Envase obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envase-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Envases
+      summary: Eliminar un envase.
+      operationId: EliminarEnvase
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Envase eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /exclusiones:
+    post:
+      tags:
+        - Exclusiones
+      summary: Crear un exclusiones.
+      operationId: CrearExclusiones
+      requestBody:
+        description: Objeto exclusiones
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/exclusion-objeto'
+      responses:
+        201:
+          description: Exclusiones creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Exclusiones
+      summary: Modificar un exclusiones.
+      operationId: ModificarExclusiones
+      requestBody:
+        description: Objeto exclusiones
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/exclusion-objeto'
+      responses:
+        204:
+          description: Exclusiones modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /exclusiones/{codigo}:
+    get:
+      tags:
+        - Exclusiones
+      summary: Obtener un exclusiones.
+      operationId: ObtenerExclusiones
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Exclusiones obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exclusion-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Exclusiones
+      summary: Eliminar un exclusiones.
+      operationId: EliminarExclusiones
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Exclusiones eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /saldo-envases:
+    post:
+      tags:
+        - Saldo-envases
+      summary: Crear un saldo de envase.
+      operationId: CrearSaldoEnvase
+      requestBody:
+        description: Objeto saldo envase
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saldoenvase-objeto'
+      responses:
+        201:
+          description: Saldo de envase creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Saldo-envases
+      summary: Modificar un saldo de envase.
+      operationId: ModificarSaldoEnvase
+      requestBody:
+        description: Objeto saldo envase
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saldoenvase-objeto'
+      responses:
+        204:
+          description: Saldo de envase modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado' 
+
+  /saldo-envases/{codigo}:
+    get:
+      tags:
+        - Saldo-envases
+      summary: Obtener un saldo de envase.
+      operationId: ObtenerSaldoEnvase
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/cliente-codigo'
+      responses:
+        200:
+          description: Saldo de envase obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/saldoenvase-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Saldo-envases
+      summary: Eliminar un saldo de envase.
+      operationId: EliminarSaldoEnvase
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/cliente-codigo'
+      responses:
+        200:
+          description: Saldo de envase eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /productos:
+    post:
+      tags:
+        - Productos
+      summary: Crear un producto.
+      operationId: CrearProducto
+      requestBody:
+        description: Objeto producto
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/producto-objeto'
+      responses:
+        201:
+          description: Producto creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Productos
+      summary: Modificar un producto.
+      operationId: ModificarProducto
+      requestBody:
+        description: Objeto producto
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/producto-objeto'
+      responses:
+        204:
+          description: Producto modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'    
+  
+  /productos/{codigo}:
+    get:
+      tags:
+        - Productos
+      summary: Obtener un producto.
+      operationId: ObtenerProducto
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Producto obtenido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/producto-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Productos
+      summary: Eliminar un producto.
+      operationId: EliminarProducto
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Producto eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+
+  /variables:
+    post:
+      tags:
+        - Variables
+      summary: Crear una variable
+      operationId: CrearVariable
+      requestBody:
+        description: Objeto variable
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variable-objeto'
+      responses:
+        201:
+          description: Variable creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Variables
+      summary: Modificar una variable.
+      operationId: ModificarVariable
+      requestBody:
+        description: Objeto variable
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variable-objeto'
+      responses:
+        204:
+          description: Variable modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /variables/{codigo}:
+    get:
+      tags:
+        - Variables
+      summary: Obtener una variable.
+      operationId: ObtenerVariable
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Variable obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/variable-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Variables
+      summary: Eliminar una variable.
+      operationId: EliminarVariable
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Variable eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /variables-articulos:
+    post:
+      tags:
+        - Variables-Articulos
+      summary: Crear una variable para artículo
+      operationId: CrearVariableArticulo
+      requestBody:
+        description: Objeto variable artículo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variablearticulo-objeto'
+      responses:
+        201:
+          description: Variable artículo creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Variables-Articulos
+      summary: Modificar una variable para artículo.
+      operationId: ModificarVariableArticulo
+      requestBody:
+        description: Objeto variable artículo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variablearticulo-objeto'
+      responses:
+        204:
+          description: Variable de artículo modificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /variables-articulos/{codigo}:
+    get:
+      tags:
+        - Variables-Articulos
+      summary: Obtener una variable para artículo.
+      operationId: ObtenerVariableArticulo
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/codigo-barras'
+        - $ref: '#/components/parameters/codigo-producto'
+      responses:
+        200:
+          description: Variable para artículo obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/variablearticulo-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Variables-Articulos
+      summary: Eliminar una variable de artículo.
+      operationId: EliminarVariableArticulo
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/codigo-barras'
+        - $ref: '#/components/parameters/codigo-producto'
+      responses:
+        200:
+          description: Variable para artículo eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /variables-mixtas:
+    post:
+      tags:
+        - Variables-Mixtas
+      summary: Crear una variable mixta
+      operationId: CrearVariableMixta
+      requestBody:
+        description: Objeto variable mixta
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variablemixta-objeto'
+      responses:
+        201:
+          description: Variable mixta creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Variables-Mixtas
+      summary: Modificar una variable mixta.
+      operationId: ModificarVariableMixta
+      requestBody:
+        description: Objeto variable mixta
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/variablemixta-objeto'
+      responses:
+        204:
+          description: Variable mixta modificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /variables-mixtas/{codigo}:
+    get:
+      tags:
+        - Variables-Mixtas
+      summary: Obtener una variable mixta.
+      operationId: ObtenerVariableMixta
+      parameters:
+        - $ref: '#/components/parameters/codigo'      
+        - $ref: '#/components/parameters/codigo-primaria'
+        - $ref: '#/components/parameters/codigo-producto'
+      responses:
+        200:
+          description: Variable mixta obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/variablemixta-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Variables-Mixtas
+      summary: Eliminar una variable mixta.
+      operationId: EliminarVariableMixta
+      parameters:
+        - $ref: '#/components/parameters/codigo'      
+        - $ref: '#/components/parameters/codigo-primaria'
+        - $ref: '#/components/parameters/codigo-producto'
+      responses:
+        200:
+          description: Variable mixta eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /tarifas:
+    post:
+      tags:
+        - Tarifas
+      summary: Crear una tarifa
+      operationId: CrearTarifa
+      requestBody:
+        description: Objeto tarifa
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tarifa-objeto'
+      responses:
+        201:
+          description: Tarifa creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Tarifas
+      summary: Modificar una tarifa.
+      operationId: ModificarTarifa
+      requestBody:
+        description: Objeto tarifa
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tarifa-objeto'
+      responses:
+        204:
+          description: Tarifa modificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /tarifas/{codigo}:
+    get:
+      tags:
+        - Tarifas
+      summary: Obtener una tarifa.
+      operationId: ObtenerTarifa
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Tarifa obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tarifa-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Tarifas
+      summary: Eliminar una tarifa.
+      operationId: EliminarTarifa
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Tarifa eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /precios:
+    post:
+      tags:
+        - Precios
+      summary: Crear un precio
+      operationId: CrearPrecio
+      requestBody:
+        description: Objeto precio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/precio-objeto'
+      responses:
+        201:
+          description: Precio creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Precios
+      summary: Modificar un precio.
+      operationId: ModificarPrecio
+      requestBody:
+        description: Objeto precio
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/precio-objeto'
+      responses:
+        204:
+          description: Precio modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /precios/{codigo}:
+    get:
+      tags:
+        - Precios
+      summary: Obtener un precio.
+      operationId: ObtenerPrecio
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/producto-codigo'
+      responses:
+        200:
+          description: Tarifa obtenida.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/precio-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Precios
+      summary: Eliminar un precio.
+      operationId: EliminarPrecio
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+        - $ref: '#/components/parameters/producto-codigo'
+      responses:
+        200:
+          description: Precio eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /pedidos:
+    put:
+      tags: 
+        - Pedidos
+      summary: Modificar un pedido.
+      operationId: ModificarPedido
+      requestBody:
+        description: Objeto pedido
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pedido-objeto'
+      responses:
+        204:
+          description: Pedido modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /pedidos/{codigo}:
+    delete:
+      tags:
+        - Pedidos
+      summary: Eliminar un pedido.
+      operationId: EliminarPedido
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Pedido eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+
+  /linea-servida:
+    put:
+      tags: 
+        - Linea-Servida
+      summary: Modificar una linea.
+      operationId: ModificarLinea
+      requestBody:
+        description: Objeto linea
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/linea-objeto'
+      responses:
+        204:
+          description: Linea modificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'  
+
+  /traducciones:
+    put:
+      tags: 
+        - Traducciones
+      summary: Modificar una traducción.
+      operationId: ModificarTraducciones
+      requestBody:
+        description: Objeto traducciones
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/traduccion-objeto'
+      responses:
+        204:
+          description: Traducciones modificado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado' 
+
+security:
+  - access-token: []
+
+components:
+
+  parameters:
+    codigo:
+      name: codigo
+      in: path
+      required: true
+      description: identificador único del recurso en SAP
+      schema:
+        type: string
+    cliente-codigo:
+      name: cliente-codigo
+      in: query
+      required: true
+      description: Código de cliente en SAP
+      schema:
+        type: string
+    codigo-barras:
+      name: codigo-barras
+      in: query
+      required: true
+      description: Código de barras
+      schema:
+        type: string        
+    codigo-producto:
+      name: codigo-producto
+      in: query
+      required: true
+      description: Código de producto
+      schema:
+        type: string        
+    producto-codigo:
+      name: producto-codigo
+      in: query
+      required: true
+      description: Código de producto en SAP
+      schema:
+        type: string
+    codigo-primaria:
+      name: codigo-primaria
+      in: query
+      required: true
+      description: Código de la variable primaria (codevar_primario_id)
+      schema:
+        type: string                 
+
+  responses:
+    solicitud-incorrecta:
+      description: Faltan parámetros requeridos o existe otro problema con la solicitud.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/400'
+    no-autorizado:
+      description: El acceso no está activo o no es válido.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/401'
+    acceso-prohibido:
+      description: Acceso prohibido. Sin permiso para ejecutar la acción. Por ej. un empleado trata de hacer algo fuera de sus límites (otro usuario) que solo puede hacer un supervisor.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/403'
+    no-encontrado:
+      description: Recurso no encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/404'
+    ok:
+      description: Recurso procesado correctamente.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/recurso-ok'
+        
+
+  schemas:
+    400:
+      title: 400 - Solicitud incorrecta.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: 'Solicitud incorrecta.'
+
+    401:
+      title: 401 - No autorizado.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 401
+        error:
+          type: string
+          example: 'No autorizado.'
+
+    403:
+      title: 403 - Acceso prohibido.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 403
+        error:
+          type: string
+          example: 'Acceso prohibido.'
+
+    404:
+      title: 404 - Recurso no encontrado.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: 'Recurso no encontrado.'
+
+    recurso-ok:
+      title: Recurso procesado.
+      description: Recurso procesado.
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+    cliente-respuesta:
+      title: Respuesta cliente
+      description: Respuesta a solicitud de cliente
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/cliente-objeto'
+        
+    subcliente-respuesta:
+      title: Respuesta subcliente
+      description: Respuesta a solicitud de subcliente
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/subcliente-objeto'
+
+    direccion-respuesta:
+      title: Respuesta dirección
+      description: Respuesta a solicitud de dirección
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/direccion-objeto'
+
+    envase-respuesta:
+      title: Respuesta envase
+      description: Respuesta a solicitud de envase
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/envase-objeto'
+
+    exclusion-respuesta:
+      title: Respuesta exclusion
+      description: Respuesta a solicitud de exclusion
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/exclusion-objeto'
+
+    saldoenvase-respuesta:
+      title: Respuesta saldo de envase
+      description: Respuesta a solicitud de saldo de envase
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/saldoenvase-objeto'
+
+    producto-respuesta:
+      title: Respuesta producto
+      description: Respuesta a solicitud de producto
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/producto-objeto'
+
+    variable-respuesta:
+      title: Respuesta variable
+      description: Respuesta a solicitud de variable
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/variable-objeto'
+
+    variablearticulo-respuesta:
+      title: Respuesta variable para artículo
+      description: Respuesta a solicitud de variable para artículo
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/variablearticulo-objeto'
+
+    tarifa-respuesta:
+      title: Respuesta tarifa
+      description: Respuesta a solicitud de tarifa
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/tarifa-objeto'
+
+    precio-respuesta:
+      title: Respuesta precio
+      description: Respuesta a solicitud de precio
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/precio-objeto'
+
+    cliente-objeto:
+      title: Objeto cliente
+      description: Objeto de descripción de un cliente
+      type: object
+      properties:
+        codigo: # Código del cliente en SAP
+          type: string
+          example: "2554"
+        empresa: # Nombre comercial de la empresa
+          type: string
+          example: "Empresa"
+        razonSocial: # Razón social de la empresa
+          type: string
+          example: "Empresa S.L."
+        alias: # Alias del cliente
+          type: string
+          example: "Alias"          
+        cif: # CIF 
+          type: string
+          example: "B999999"
+        telefono: # Teléfono fijo
+          type: string
+          example: "999 888 777"
+        telefono2: # Teléfono fijo 2
+          type: string
+          example: "999 666 555"
+        fax: # Fax
+          type: string
+          example: "999 444 333"                    
+        movil: # Teléfono móvil
+          type: string
+          example: "666 777 888"
+        email: # E-mail
+          type: string
+          example: "mi@email.com"
+        web: # URL web
+          type: string
+          example: "www.web.com"
+        personaContacto: # Nombre de persona de contacto
+          type: string
+          example: "Nombre Apellidos"
+        login: # Login
+          type: string
+          example: "login"          
+        clave: # Contraseña
+          type: string
+          example: "123456789"
+        idioma: # Idioma, código corto de 2 dígitos
+          type: string
+          example: "23"
+        viaDepagoCodigo: # Código SAP de la vía de pago
+          type: string
+          example: "125"
+        viaDePagoTexto: # Texto 
+          type: string
+          example: "Tarjeta"
+        condicionesDePagoCodigo: # Código SAP de las condiciones de pago
+          type: string
+          example: "5897"
+        condicionesDePagoTexto: # Texto del campo
+          type: string
+          example: "Estándar"
+        condicionesDePagoTransporteCodigo: # Código SAP 
+          type: string
+          example: "574"
+        condicionesDePagoTransporteTexto: # Texto del campo
+          type: string
+          example: "Estándar"
+        diaPago: # Dia de pago
+          type: string
+          example: "01 de Noviembre"
+        codigoGrupo: # Codigo de grupo
+          type: string
+          example: "cod_grp"
+        nombreGrupo: # Nombre de grupo
+          type: string
+          example: "nombre grupo"                              
+        iban: # Código IBAN de la cuenta
+          type: string
+          example: "ES1002378348763546"
+        bic: # Código SWIFT BIC de la cuenta
+          type: string
+          example: "BWHFJDF34"
+        tcrMinimo: # TCR mínimo 
+          type: integer
+          example: 5
+        plataformasMinimas: # Nº de plataformas mínimas 
+          type: integer
+          example: 5
+        permitirProgramados: # Permitir programaciones (1, 0)
+          type: boolean
+          example: false
+        subagente: # Subagente
+          type: string
+          example: "subagente"          
+        codigoGrupoImpositivo: # Codigo grupo impositivo 
+          type: string
+          example: "EI"   
+        codigoAgente: # Codigo de comercial 
+          type: string
+          example: "19"    
+        nombreAgente: # Nombre del comercial
+          type: string
+          example: "Olga Medina"
+        codigoEmpVenta: # Codigo de empleado venta
+          type: string
+          example: "33"
+        loginAgente: # Login del comercial
+          type: string
+          example: "comercial"
+        claveAgente: # Clave del comercial
+          type: string
+          example: "c0ntr4s3ñ4"
+        idiomaAgente: # Idioma del agente
+          type: string
+          example: "23"          
+        codigoEmprDest: # Código empresa vendedora para la tabla clientes_vendedores
+          type: string
+          example: "01_HRUIZ"
+        codigoCliente: # Código cliente para la tabla clientes_vendedores
+          type: string
+          example: "C000213"          
+        codigoTarifa: # Código tarifa para la tabla clientes_vendedores
+          type: string
+          example: "3"          
+        limiteCredito: # Limite de credito
+          type: number
+          example: 145.5
+        limiteComprometido: # Limite comprometido
+          type: number
+          example: 120.3
+        importeDispuesto: # Importe dispuesto
+          type: number
+          example: 81.7
+        riesgoConcedido: # Clave del comercial
+          type: string
+          example: "50"      
+        riesgoDisponible: # Clave del comercial
+          type: string
+          example: "60"            
+        estadoCliente: # Estado del cliente ('activo','inactivo','bloqueado')
+          type: string
+          enum:
+            - activo
+            - inactivo
+            - bloqueado
+          example: activo                                                     
+
+    subcliente-objeto:
+      title: Objeto subcliente
+      description: Objeto de descripción de un subcliente
+      type: object
+      properties:
+        codigo: # Código del subcliente en SAP
+          type: string
+          example: "2554"
+        clienteCodigo: # Código del cliente en SAP
+          type: string
+          example: "456"
+        nombre: # Nombre del subcliente
+          type: string
+          example: Empresa S.L.
+
+    direccion-objeto:
+      title: Objeto dirección
+      description: Objeto de descripción de una dirección
+      type: object
+      properties:
+        codigo: # Código de la dirección en SAP
+          type: string
+          example: "2554"
+        clienteCodigo: # Código del cliente en SAP
+          type: string
+          example: "456"
+        tipo: # Tipo de la dirección (‘facturacion’, ‘entrega’)
+          type: string
+          enum:
+            - Facturacion
+            - Entrega
+          example: Entrega
+        direccion: # Dirección
+          type: string
+          example: C/Luz 5
+        localidad: # Localidad
+          type: string
+          example: Fuengirola
+        cp: # Código Postal
+          type: string
+          example: "29630"
+        provincia: # Provincia
+          type: string
+          example: Madrid
+        pais: # País
+          type: string
+          example: España
+        zonaVentaVodigo: # Código de la zona de venta
+          type: string
+          example: "23345"
+        zonaVentaTexto: # Nombre de la zona de venta
+          type: string
+          example: Zona 5 
+        zonaTransporteCodigo: # Código de la zona de transporte
+          type: string
+          example: "2335"
+        zonaTransporteTexto: # Nombre de la zona de transporte
+          type: string
+          example: Zona 3
+
+    envase-objeto:
+      title: Objeto envase
+      description: Objeto de descripción de un envase
+      type: object
+      properties:
+        codigo: # Código del envase en SAP
+          type: string
+          example: "2554"
+        vendedorCodigo: # Código del vendedor en SAP
+          type: string
+          example: "456"
+        nombre: # Nombre del envase
+          type: string
+          example: Plataforma X
+
+    exclusion-objeto:
+      title: Objeto exclusion
+      description: Objeto de descripción de un exclusion
+      type: object
+      properties:
+        codigo: # Código del exclusion en SAP
+          type: string
+          example: "2545"
+        productoCodigo: # Código del vendedor en SAP
+          type: string
+          example: "PXT0310C22"
+        paisCodigo: # Código del vendedor en SAP
+          type: string
+          example: "ES"      
+        comercialCodigo: # Código del vendedor en SAP
+          type: string
+          example: "20"               
+
+    saldoenvase-objeto:
+      title: Objeto saldo de envase
+      description: Objeto de descripción de un saldo de envase
+      type: object
+      properties:
+        codigo: # Código del envase en SAP
+          type: string
+          example: "2554"
+        clienteCodigo: # Código del cliente en SAP
+          type: string
+          example: "456"
+        stock: # Saldo de envases
+          type: integer
+          example: 45
+
+    producto-objeto:
+      title: Objeto producto
+      description: Objeto de descripción de un producto
+      type: object
+      properties:
+        codigo: # Código del producto en SAP
+          type: string
+          example: "2554"
+        nombreEs: # Primera parte del nombre del producto en español
+          type: string
+          example: Dipladenia rio grand type
+        nombre2Es: # Segunda parte del nombre del producto en español
+          type: string
+          example: C30 Arbusto Maceta Antracita
+        nombreEn: # Primera parte del nombre del producto en ingles
+          type: string
+          example: YUCCA ROSTRATA
+        nombre2En: # Segunda parte del nombre del producto en ingles
+          type: string
+          example: P.65 Lt TRUNK 120/140 cm
+        nombreDe: # Primera parte del nombre del producto en aleman
+          type: string
+          example: TRACHYCARPUS FORTUNEI
+        nombre2De: # Segunda parte del nombre del producto en aleman
+          type: string
+          example: T.110 Lts BAUMSTAMM 150/175 CM
+        nombreIt: # Primera parte del nombre del producto en italiano
+          type: string
+          example: ALOE VERA
+        nombre2It: # Segunda parte del nombre del producto en italiano
+          type: string
+          example: V.13 -EXTRA-    
+        nombreFr: # Primera parte del nombre del producto en frances
+          type: string
+          example: CACTUS MIX
+        nombre2Fr: # Segunda parte del nombre del producto en frances
+          type: string
+          example: P.13
+        nombreSu: # Primera parte del nombre del producto en Sueco
+          type: string
+          example: AZALEA
+        nombre2Su: # Segunda parte del nombre del producto en Sueco
+          type: string
+          example: T.13
+        familiaCodigo: # Código de familia
+          type: string
+          example: "4532"
+        familiaTexto: # Nombre de familia
+          type: string
+          example: Poin
+        familiaOrden: # Orden de familia
+          type: string
+          example: "12"           
+        potCodigo: # Código de pot
+          type: string
+          example: "4532"
+        potTexto: # Nombre de pot
+          type: string
+          example: "T15"
+        potOrden: # Orden del pot
+          type: string
+          example: "14"          
+        alturaCodigo: # Código de altura
+          type: string
+          example: "4532"
+        alturaTexto: # Nombre de altura
+          type: string
+          example: "T120"
+        alturaOrden: # Orden de altura
+          type: string
+          example: "16"            
+        macetaCodigo: # Código de maceta
+          type: string
+          example: "8766"
+        macetaTexto: # Nombre de maceta
+          type: string
+          example: "C20 Maceta Antracita"
+        formatoCodigo: # Código de formato
+          type: string
+          example: "567"
+        formatoTexto: # Nombre de formato
+          type: string
+          example: "Espaldera"
+        marcaCodigo: # Código de marca
+          type: string
+          example: "678"
+        marcaTexto: # Nombre de marca
+          type: string
+          example: "Filigrana"
+        codigoBarras: # Código de barras
+          type: string
+          example: "23324345345"
+        codigoBarrasProv : # Código de barras proveedor
+          type: string
+          example: "13489456712"            
+        clasificacionGeografica: # Clasificación geográfica
+          type: string
+          example: G20
+        upt: # Unidades por plataforma
+          type: integer
+          example: 20 
+        ucc: # Unidades por carro
+          type: integer
+          example: 60
+        ptcc: # Plataformas por carro
+          type: integer
+          example: 3
+        porcPtcc: # Porcentaje de plataformas por carro
+          type: number
+          example: 33
+        valoracion: # Valoracion (1, 2, 3)
+          type: string
+          enum:
+            - 1
+            - 2
+            - 3
+          example: 3
+        cantidadMinimaOferta: # Cantidad mínima oferta
+          type: integer
+          example: 5
+        cantidadMinimaPlataforma: # Cantidad mínima plataforma
+          type: integer
+          example: 2
+        urlFoto1: # Url de foto 1
+          type: string
+          example: "http://192.168.1.2/fotos/asdfsdf.jpg"
+        urlFoto2: # Url de foto 2
+          type: string
+          example: "http://192.168.1.2/fotos/asdfsdf.jpg"
+        urlFoto3: # Url de foto 3
+          type: string
+          example: "http://192.168.1.2/fotos/asdfsdf.jpg"
+        estado: # Estado del producto ('disponible', 'prevision', 'agotado')
+          type: string
+          enum:
+            - disponible
+            - prevision
+            - agotado
+          example: disponible
+        porcDescuento: # Porcentaje de descuento
+          type: number
+          example: 20
+        stock: # Stock (sólo para disponible)
+          type: integer
+          example: 1000
+        stockInicial: # Stock Inicial
+          type: integer
+          example: 2000          
+        semana: # Semana (sólo para previsión)
+          type: integer
+          example: 12
+        precio: # Precio (precio de referencia único por producto)
+          type: number
+          example: 18
+        descuento: # Descuento
+          type: number
+          example: 3.6
+        descuentoOferta: # Descuento Oferta
+          type: number
+          example: 1.2                   
+        novedad: # Novedad (1, 0)
+          type: boolean
+          example: false
+        recomendado: # Recomendado (1, 0)
+          type: boolean
+          example: true
+        observacionesEs: # Observaciones
+          type: string
+          example: "Observaciones bla bla"
+        observacionesEn: # Observaciones
+          type: string
+          example: "No Flowers"
+        observacionesFr: # Observaciones
+          type: string
+          example: "Beaucoup de Fleur"
+        observacionesDe: # Observaciones
+          type: string
+          example: "Viele Blume"
+        observacionesIt: # Observaciones
+          type: string
+          example: "Molto fiore"
+        observacionesSu: # Observaciones
+          type: string
+          example: "Mycket blomma"          
+        unidadCaja: # Unidades de cajas
+          type: integer
+          example: 120
+        cajasPlataformas: # Unidades de cajas plataformas
+          type: integer
+          example: 200
+        anoDesde: # Fecha desde 
+          type: string
+          example: "2019"
+        semanaDesde: # Fecha desde 
+          type: string
+          example: "45"
+        anoHasta: # Fecha desde 
+          type: string
+          example: "2019"
+        semanaHasta: # Fecha desde 
+          type: string
+          example: "46"          
+        anoDesdeDisponible: # Fecha desde 
+          type: string
+          example: "2019"
+        semanaDesdeDisponible: # Fecha desde 
+          type: string
+          example: "47"
+        anoHastaDisponible: # Fecha desde 
+          type: string
+          example: "2019"
+        semanaHastaDisponible: # Fecha desde 
+          type: string
+          example: "48"
+        cantidadMaximaProducto: # Cantidad maxima de producto
+          type: integer
+          example: 185
+        codigoGrupoImpositivo: # Codigo grupo impositivo 
+          type: string
+          example: "EI"
+        proveedor: # proveedor
+          type: string
+          example: "prov"
+        almacen: # almacen
+          type: string
+          example: "alm"   
+        invernadero: # invernadero 
+          type: string
+          example: "inv"
+        bk: # bk (1, 0)
+          type: boolean
+          example: true
+        sd: # SD
+          type: string
+          example: "sd example"                                                                                                                 
+
+    variable-objeto:
+      title: Objeto variable
+      description: Objeto de descripción de una variable
+      type: object
+      properties:
+        codigo: # Código de la variable en SAP
+          type: string
+          example: "2554"
+        nombre: # Nombre de la variable
+          type: string
+          example: Color
+        ordenSap: # Orden SAP
+          type: integer
+          example: 4          
+
+    variablearticulo-objeto:
+      title: Objeto variable para artículo
+      description: Objeto de descripción de una variable para artículo
+      type: object
+      properties:
+        codigo: # Código de valor en SAP
+          type: string
+          example: "2554"
+        codigoBarras: # Código de barras
+          type: string
+          example: "23324345345"          
+        codigoProducto: # Código de producto en SAP
+          type: string
+          example: "PT00074C21"          
+        codigoVariable: # Código de variable en SAP
+          type: string
+          example: "2554"
+        codigoValor: # Código del valor
+          type: string
+          example: "C003"                          
+        valor: # Valor de la variable para el artículo
+          type: string
+          example: Roja          
+        stock: # Stock
+          type: integer
+          example: 50
+        tipo: # Tipo
+          type: string
+          example: "compuesta"
+        fechaModificacion: # Fecha
+          type: string
+          example: "2019-07-23"
+        horaModificacion: # Hora
+          type: string
+          example: "08:30:15"
+
+    variablemixta-objeto:
+      title: Objeto variable mixta
+      description: Objeto de descripción de una variable mixta
+      type: object
+      properties:
+        codigoMixta: # Código de variable mixta (codevar_variables_id)
+          type: string
+          example: "23324345345"
+        codigoPrimaria: # Código de variable primaria (codevar_primario_id)
+          type: string
+          example: "2554"                 
+        codigoProducto: # Código de producto en SAP (Necesario para identificar el id de la codebar_variable)
+          type: string
+          example: "PT00074C21"          
+        porcentaje: # Porcentaje
+          type: string
+          example: "compuesta"                                             
+        
+    tarifa-objeto:
+      title: Objeto tarifa
+      description: Objeto de descripción de una tarifa
+      type: object
+      properties:
+        codigo: # Código de la tarifa en SAP
+          type: string
+          example: "2554"
+        nombre: # Nombre de la tarifa
+          type: string
+          example: Tarifa 1
+
+    precio-objeto:
+      title: Objeto precio
+      description: Objeto de descripción de un precio
+      type: object
+      properties:
+        codigo: # Código de la tarifa en SAP
+          type: string
+          example: "2554"
+        productoCodigo: # Código de producto en SAP
+          type: string
+          example: "2554"  
+        precio: # Precio
+          type: number
+          example: 85
+        precioOferta: # Precio de oferta
+          type: number
+          example: 65
+
+    pedido-objeto:
+      title: Objeto pedido
+      description: Objeto de descripción de un pedido
+      type: object
+      properties:
+        codigo: # Código del pedido
+          type: string
+          example: "2554"         
+        codigoPedido: # Código del pedido para modificar
+          type: string
+          example: "A123"
+
+    linea-objeto:
+      title: Objeto linea
+      description: Objeto de descripción de una linea
+      type: object
+      properties:
+        codigoProducto: # Código de linea
+          type: string
+          example: "NA00813L6"         
+        codigoPedido: # Código de linea para modificar
+          type: string
+          example: "1600000822"
+        numeroLinea: # Número linea
+          type: string
+          example: "1"              
+       
+    token:
+      title: Token de acceso
+      description: Token a utilizar en posteriores solicitudes al API.
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: 1cdad0acb1863bd12df200cf999677e4e51b5f71
+
+    traduccion-objeto:
+      title: Objeto traduccion
+      description: Objeto de descripción de una traduccion
+      type: object
+      properties:
+        tabla: # Tabla que se va a modificar
+          type: string
+          example: "@SEIFAMILIAS"
+        codigo: # Código SAP del elemento a modificar
+          type: string
+          example: "ABET"          
+        idioma: # el idioma que se va a modificar
+          type: string
+          example: "fr"
+        valor: # El nuevo valor que vas a introducir
+          type: string
+          example: "Herbes"               
+          
+  securitySchemes:
+    authorization-token:
+      type: http
+      description: Token de acceso para iniciar sesión (por defecto 1234567890).
+      scheme: bearer
+      bearerFormat: token que se debe conocer previamente para poder iniciar sesión.
+
+    access-token:
+      type: http
+      description: Token de acceso para todas las solicitudes al API una vez que hemos iniciado sesión.
+      scheme: bearer
+      bearerFormat: token (acces_token) obtenido durante el inicio de sesión.

@@ -1,0 +1,392 @@
+openapi: 3.0.2
+
+info:
+  title: Library Toomba API
+  description: Library Test for Toomba.
+  version: "1.0"
+  contact:
+    name: Library Toomba API
+    email: portilloster@gmail.com
+
+servers:
+  - url: http://apibloomstore.clientesbiz.com/v1
+    description: Library Toomba test server
+
+tags:
+  - name: Autentication
+  - name: Books
+  - name: Categories
+
+paths:  
+  /access-token:
+    post:
+      security:
+        - authorization-token: []
+      tags:
+        - Autentication
+      summary: Generate access token.
+      operationId: GenerarToken
+      responses:
+        200:
+          description: Generate access Token required for the operations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/token'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'      
+
+  /books:
+    post:
+      tags:
+        - Books
+      summary: Create a book.
+      operationId: CreateBook
+      requestBody:
+        description: Book object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/book-objeto'
+      responses:
+        201:
+          description: Book created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Books
+      summary: Edit a book.
+      operationId: EditBook
+      requestBody:
+        description: Book object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/book-objeto'
+      responses:
+        204:
+          description: Book edited.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+  /books/{codigo}:
+    get:
+      tags:
+        - Books
+      summary: Get a book.
+      operationId: GetBook
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Book found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Books
+      summary: Delete a book.
+      operationId: DeleteBook
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Book deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'                       
+
+  /categories:
+    post:
+      tags:
+        - Categories
+      summary: Create category.
+      operationId: CreateCategory
+      requestBody:
+        description: Category object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category-objeto'
+      responses:
+        201:
+          description: Category created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+    put:
+      tags: 
+        - Categories
+      summary: Edit a category.
+      operationId: EditCategory
+      requestBody:
+        description: Category object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category-objeto'
+      responses:
+        204:
+          description: Category edited.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+  /categories/{codigo}:
+    get:
+      tags:
+        - Categories
+      summary: Get a category.
+      operationId: GetCategory
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Category found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/category-respuesta'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'
+    delete:
+      tags:
+        - Categories
+      summary: Delete a category.
+      operationId: DeleteCategory
+      parameters:
+        - $ref: '#/components/parameters/codigo'
+      responses:
+        200:
+          description: Category deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recurso-ok'
+        400:
+          $ref: '#/components/responses/solicitud-incorrecta'
+        401:
+          $ref: '#/components/responses/no-autorizado'
+        404:
+          $ref: '#/components/responses/no-encontrado'      
+
+security:
+  - access-token: []
+
+components:
+
+  parameters:
+    codigo:
+      name: codigo
+      in: path
+      required: true
+      description: This field refers to service_id
+      schema:
+        type: string               
+
+  responses:
+    solicitud-incorrecta:
+      description: Required parameters are missing or there is another problem with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/400'
+    no-autorizado:
+      description: The access is not active or is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/401'
+    acceso-prohibido:
+      description: Forbiden access.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/403'
+    no-encontrado:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/404'
+    ok:
+      description: Resource successfully processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/recurso-ok'
+        
+
+  schemas:
+    400:
+      title: 400 - Bad request.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: 'Bad request.'
+
+    401:
+      title: 401 - No authorized.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 401
+        error:
+          type: string
+          example: 'No authorized.'
+
+    403:
+      title: 403 - Forbidden access.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 403
+        error:
+          type: string
+          example: 'Forbidden access.'
+
+    404:
+      title: 404 - Resource not found.
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: 'Resource not found.'
+
+    recurso-ok:
+      title: Resource processed.
+      description: Resource processed.
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+    book-respuesta:
+      title: Book response
+      description: Customer request response
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/book-objeto'
+
+    category-respuesta:
+      title: Category response
+      description: Customer request response
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/category-objeto'   
+
+    book-objeto:
+      title: Book object.
+      description: Book object description.
+      type: object
+      properties:
+        book_id: # Book Id
+          type: string
+          example: "1851MDHM"         
+        name: # Book name
+          type: string
+          example: "Moby-Dick"       
+        category_id: # Book category
+          type: string
+          example: "ADV"
+        author: # Book author
+          type: string
+          example: "Herman Melville"          
+
+    category-objeto:
+      title: Category object.
+      description: Category object description.
+      type: object
+      properties:
+        category_id: # Category Id
+          type: string
+          example: "ADV"         
+        name: # Category name
+          type: string
+          example: "Adventure"
+ 
+    token:
+      title: Access token
+      description: Generate access Token required for the operations.
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: 1cdad0acb1863bd12df200cf999677e4e51b5f71
+      
+  securitySchemes:
+    authorization-token:
+      type: http
+      description: First access token for log in (by default 1234567890).
+      scheme: bearer
+      bearerFormat: You must know this token beforehand for log-in.
+
+    access-token:
+      type: http
+      description: Access token for all the API request once we have log-in.
+      scheme: bearer
+      bearerFormat: token (acces_token).

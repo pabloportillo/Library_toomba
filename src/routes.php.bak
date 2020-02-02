@@ -1,0 +1,122 @@
+<?php
+
+use Slim\App;
+use Slim\Http\Request;
+use Slim\Http\Response;
+use Resources\Controllers\AccessController;
+use Resources\Controllers\ClienteController;
+use Resources\Controllers\SubclienteController;
+use Resources\Controllers\DireccionController;
+use Resources\Controllers\EnvaseController;
+use Resources\Controllers\SaldoEnvaseController;
+use Resources\Controllers\VariableController;
+use Resources\Controllers\TarifaController;
+use Resources\Controllers\VariableArticuloController;
+use Resources\Controllers\PrecioController;
+use Resources\Controllers\ProductoController;
+
+
+   /**
+     *  logout
+     */
+   // $app->delete('/usuarios', UsuarioController::class. ':logout');
+
+  $app->group('/v1', function (App $app) {
+
+    /**
+     * ---------------------------------------- AUTENTICACIÓN ----------------------------------------
+     */
+    // Access Token -> Generar Token de acceso
+    $app->post('/access-token',AccessController::class. ':token')->add($app->getContainer()->get('isloggedMiddlewareGuest'));
+
+    /**
+     * ---------------------------------------- CLIENTES ----------------------------------------
+     */
+    $app->post('/clientes',ClienteController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/clientes',ClienteController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/clientes/{codigo}',ClienteController::class. ':cliente')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/clientes/{codigo}',ClienteController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/clientes',ClienteController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));  
+   
+    /**
+     * ---------------------------------------- SUBCLIENTES ----------------------------------------
+     */
+    $app->post('/subclientes',SubclienteController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/subclientes',SubclienteController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/subclientes/{codigo}',SubclienteController::class. ':subcliente')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/subclientes/{codigo}',SubclienteController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/subclientes',SubclienteController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- DIRECCIONES ----------------------------------------
+     */
+    $app->post('/direcciones',DireccionController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/direcciones',DireccionController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/direcciones/{codigo}',DireccionController::class. ':direccion')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/direcciones/{codigo}',DireccionController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/direcciones',DireccionController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- ENVASES ----------------------------------------
+     */
+    $app->post('/envases',EnvaseController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/envases',EnvaseController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/envases/{codigo}',EnvaseController::class. ':envase')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/envases/{codigo}',EnvaseController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/envases',EnvaseController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- SALDO-ENVASES ----------------------------------------
+     */
+    $app->post('/saldo-envases',SaldoEnvaseController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/saldo-envases',SaldoEnvaseController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/saldo-envases/{codigo}',SaldoEnvaseController::class. ':saldoenvase')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/saldo-envases/{codigo}',SaldoEnvaseController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/saldo-envases',SaldoEnvaseController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- PRODUCTOS ---------------------------------------- 
+     * NOTA IMPORTANTE: el campo 'vendedor_id' en productos no se introduce. Porque ahora mismo solo va a haber un único vendedor.
+     */
+    $app->post('/productos',ProductoController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/productos',ProductoController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/productos/{codigo}',ProductoController::class. ':producto')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/productos/{codigo}',ProductoController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/productos',ProductoController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+    /**
+     * ---------------------------------------- VARIABLES ----------------------------------------
+     */
+    $app->post('/variables',VariableController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/variables',VariableController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/variables/{codigo}',VariableController::class. ':variable')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/variables/{codigo}',VariableController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/variables',VariableController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- VARIABLES-ARTICULO ----------------------------------------
+     */
+    $app->post('/variables-articulos',VariableArticuloController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/variables-articulos',VariableArticuloController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/variables-articulos/{codigo}',VariableArticuloController::class. ':variablearticulo')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/variables-articulos/{codigo}',VariableArticuloController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/variables-articulos',VariableArticuloController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+    
+    /**
+     * ---------------------------------------- TARIFAS ----------------------------------------
+     * NOTA IMPORTANTE: el campo 'vendedor_id' en productos no se introduce. Porque ahora mismo solo va a haber un único vendedor.
+     */
+    $app->post('/tarifas',TarifaController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/tarifas',TarifaController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/tarifas/{codigo}',TarifaController::class. ':tarifa')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/tarifas/{codigo}',TarifaController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/tarifas',TarifaController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+
+    /**
+     * ---------------------------------------- PRECIOS ----------------------------------------
+     */     
+    $app->post('/precios',PrecioController::class. ':insertar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->put('/precios',PrecioController::class. ':modificar')->add($app->getContainer()->get('isloggedMiddleware'));  
+    $app->get('/precios/{codigo}',PrecioController::class. ':precio')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->delete('/precios/{codigo}',PrecioController::class. ':borrar')->add($app->getContainer()->get('isloggedMiddleware'));
+    $app->get('/precios',PrecioController::class. ':error')->add($app->getContainer()->get('isloggedMiddleware'));
+  });
